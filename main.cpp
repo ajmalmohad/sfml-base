@@ -9,6 +9,8 @@ int main()
     shape.setOutlineThickness(10.f);
     shape.setOutlineColor(sf::Color(250, 150, 100));
 
+    sf::View view = window.getDefaultView();
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -16,6 +18,15 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            else if (event.type == sf::Event::Resized)
+            {
+                // resize my view
+                view.setSize({static_cast<float>(event.size.width),
+                              static_cast<float>(event.size.height)});
+                window.setView(view);
+                // and align shape
+                shape.setPosition(window.mapPixelToCoords(sf::Vector2i{window.getSize() / 2u}));
+            }
         }
 
         window.clear();
